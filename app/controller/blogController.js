@@ -37,7 +37,6 @@ function blogController() {
           }
 
           const { blogTitle, authorName, content,categories, author_id } = req.body;
-          // const imagePath = req.file ? req.file.path : null;
           console.log(req.body)
 
 
