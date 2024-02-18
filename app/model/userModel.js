@@ -12,15 +12,7 @@ const userSchema = new Schema(
                 ref: 'Blog'
             }
         ],
-        date:{ type:String, default:Date.now },
-        isAdmin:{
-            type:Boolean,
-            default:false
-        },
-        isBlocked: {
-            type: Boolean,
-            default: false
-        }
+        date:{ type:String, default:Date.now }
        
     },
     { timestamps: true });

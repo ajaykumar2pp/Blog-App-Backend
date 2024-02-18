@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
 
       // Attach the authenticated user data to the request object
       req.user = user;
-      console.log(req.user)
+      // console.log(req.user)
 
       // Continue to the next middleware or route handler
       next();

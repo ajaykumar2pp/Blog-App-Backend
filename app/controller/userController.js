@@ -41,7 +41,7 @@ function userController() {
         delete userWithoutPassword.password;
 
         resp.status(201).json({ data: { user: userWithoutPassword } });
-        console.log(userWithoutPassword)
+        // console.log(userWithoutPassword)
       } catch (err) {
         resp.status(500).json({ error: "Failed to create user" });
       }
@@ -83,7 +83,6 @@ function userController() {
 
       // console.log(token)
 
-      // resp.status(201).json({ data: { user: userWithoutPassword } });
       return resp.status(200).json({
         data: {
           message: 'User Login in successful',
