@@ -259,15 +259,16 @@ function blogController() {
     //******************  Search Blog  *********************** */
     async search(req, resp) {
       try {
-        let searchKey = req.params.key;
-        let searchBlog = await Blog.find({
+        const searchKey = req.params.key.trim();
+        const  searchBlog = await Blog.find({
           "$or": [
-            { blogTitle: { $regex: searchKey , $options: 'i'} },
-            { authorName: { $regex: searchKey, $options: 'i' } },
+            { blogTitle: { $regex: new RegExp(searchKey, 'i') } },
+            { authorName: { $regex: new RegExp(searchKey, 'i') } },
           ],
         }).select("-updatedAt -createdAt -_v");
+
         if (searchBlog.length === 0) {
-          return resp.status(404).json({ error: "Blog not found" });
+          return resp.status(404).json({ error: 'No blogs found matching the search criteria.' });
         }
         resp.json(searchBlog);
       } catch (err) {
