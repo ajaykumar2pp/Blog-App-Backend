@@ -36,7 +36,7 @@ function blogController() {
             return resp.status(500).json({ error: 'Internal server error' });
           }
 
-          const { blogTitle, authorName, content,categories, author_id } = req.body;
+          const { blogTitle, authorName, content, categories, author_id } = req.body;
           console.log(req.body)
 
 
@@ -100,11 +100,11 @@ function blogController() {
       try {
         let filter = {};
         const { category } = req.query;
-    
+
         if (category && category !== 'All') {
           filter = { categories: category };
         }
-    
+
         const blogs = await Blog.find(filter).select("-updatedAt -createdAt -__v").sort({ _id: -1 });
         //  console.log(blogs)
         if (blogs.length > 0) {
@@ -127,7 +127,7 @@ function blogController() {
             return resp.status(500).json({ error: 'Internal server error' });
           }
 
-          const { blogTitle,content,categories, authorName} = req.body;
+          const { blogTitle, content, categories, authorName } = req.body;
           console.log(req.body)
 
 
@@ -260,7 +260,7 @@ function blogController() {
     async search(req, resp) {
       try {
         const searchKey = req.params.key.trim();
-        const  searchBlog = await Blog.find({
+        const searchBlog = await Blog.find({
           "$or": [
             { blogTitle: { $regex: new RegExp(searchKey, 'i') } },
             { authorName: { $regex: new RegExp(searchKey, 'i') } },
@@ -272,7 +272,7 @@ function blogController() {
         }
         resp.json(searchBlog);
       } catch (err) {
-         console.error('Error searching for blogs:', err);
+        console.error('Error searching for blogs:', err);
         resp.status(500).json({ error: "Failed to search blog" });
       }
     },
@@ -299,23 +299,30 @@ function blogController() {
         return resp.json({ data: { message: "No blog found for the specified author_id" } });
       } catch (err) {
         console.error(err);
-        return  resp.status(500).json({ error: "Failed to fetch blogs" });
+        return resp.status(500).json({ error: "Failed to fetch blogs" });
       }
     },
 
-     //****************** Get all categories  *********************** *//
-     async getAllCategory(req, resp) {
+    //****************** Get all categories  *********************** *//
+    async getAllCategory(req, resp) {
       try {
-        const blogs = await Blog.find();
-        const allCategories = blogs.reduce(
-          (categories, blog) => [...categories, ...blog.categories],
-          []
-        );
-        const uniqueCategories = [...new Set(allCategories)];
-        resp.json(uniqueCategories);
-      } catch (error) {
-        resp.status(500).json({ error: "Internal Server Error" });
+        const categories = await Blog.distinct('categories'); // Get distinct categories from the 'categories' field
+        resp.status(200).json(categories);
+      } catch (err) {
+        console.error(err);
+        resp.status(500).json({ error: 'Internal server error' });
       }
+      // try {
+      //   const blogs = await Blog.find();
+      //   const allCategories = blogs.reduce(
+      //     (categories, blog) => [...categories, ...blog.categories],
+      //     []
+      //   );
+      //   const uniqueCategories = [...new Set(allCategories)];
+      //   resp.json(uniqueCategories);
+      // } catch (error) {
+      //   resp.status(500).json({ error: "Internal Server Error" });
+      // }
     }
   };
 }

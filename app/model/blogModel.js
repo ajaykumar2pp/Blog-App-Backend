@@ -20,7 +20,7 @@ const blogSchema = new Schema(
                 return `${image}`
             }
         },
-        categories: []
+        categories: { type: String, required: true }
 
     },
     { timestamps: true, toJSON: { getters: true }, id: false }
